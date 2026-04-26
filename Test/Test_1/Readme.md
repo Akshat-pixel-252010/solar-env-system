@@ -11,6 +11,9 @@ Testing sensors and collecting raw data.
 - Light sensor (Lux)
 - Temperature sensor
 - Barometric sensor
+
+## Dataset
+https://drive.google.com/drive/folders/1-TWnAJxyNyev6trqDqj-QUDeqDI7cLDb?usp=sharing
 - Solar panel + battery
 
 ## Current Problems
