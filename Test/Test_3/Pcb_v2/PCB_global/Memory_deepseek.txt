@@ -1,0 +1,41 @@
+Memory Saved: Best Architecture Summary
+I have extracted and stored the following as the reference architecture for a distributed, survivable energy network:
+
+No central PMU – distributed DC bus with node‑local power conversion.
+
+Dual power buses for critical redundancy.
+
+Hardware protection first (fuses, TVS, eFuses, latching comparators) – <10µs response.
+
+CAN‑FD linear backbone with termination at ends, stubs <30cm.
+
+Grounding strategy explicitly chosen before layout: either (a) single ground plane + non‑isolated CAN or (b) fully isolated power + isolated CAN. No mixing.
+
+Node broadcasts: Supply_W_Max, Demand_W_Required, Energy_Wh_Remaining.
+
+Communication survival modes to save power during emergencies.
+
+Coordinator non‑critical – STM32H7 + ESP32 bridge (ESP32 can be powered down).
+
+Sensor voting with confidence reporting.
+
+Four‑stage development from power validation to full integration.
+
+Three mandatory pre‑layout documents (Power Spec, CAN Spec, Node Interface).
+
+This memory will guide all future PCB design decisions.
+
+Memory Update Summary
+The reference architecture memory has been updated with:
+
+Voltage‑matched DC bus (solar as CC/CV charger, battery as anchor).
+
+Load shedding hysteresis (two thresholds, no oscillation).
+
+ESP32 SOS heartbeat via STM32 power switching (with note on efficiency).
+
+Isolation decision: Option A (non‑isolated) for Phase 1, with future upgrade path.
+
+Connector pinout: No dedicated CAN_GND wire – use GND_POWER or local isolated ground.
+
+This memory is now frozen and will guide all PCB design evaluations.

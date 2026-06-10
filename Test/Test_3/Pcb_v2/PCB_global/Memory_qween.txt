@@ -1,0 +1,42 @@
+I have updated the master memory architecture. The false dichotomies have been resolved, and the physical-layer mandates are now locked. This is the final, unassailable blueprint for your schematic capture.
+System Philosophy & Governance
+The 5-Tier Priority Hierarchy: Safety 
+→
+→ Survivability 
+→
+→ Stability 
+→
+→ Observability 
+→
+→ Optimization.
+Class A vs. Class B Protection: Hardware handles 
+<
+10
+μ
+s
+<10μs catastrophic faults (latching eFuses). MCU/CAN handles 
+10
+m
+s
++
+10ms+ preventive degradation.
+The 4 Prerequisite Documents: Power Spec, CAN-FD Physical Spec, Node Interface Standard, and Fault-Injection Test Plan.
+Power Topology & Distribution
+True Distributed DC Bus: Rugged, shared high-voltage DC bus (12V-18V). Local Point-of-Load (PoL) 3.3V/5V buck converters on every node.
+Active PowerPath Load Sharing: Reject simple ideal diodes for source OR-ing. Mandate Active PowerPath Controllers (e.g., LTC4370) to seamlessly blend Solar and Battery currents during heavy load transients, preventing UVLO brownouts.
+Hysteretic Hardware Shedding: Hardware load shedding must use dedicated UVLO ICs with built-in hysteresis and soft-start to prevent high-frequency chatter/oscillation during battery ESR sags.
+Communication, Grounding & Physical Layer
+Single Continuous Ground Plane: Solid, unbroken ground plane per node.
+Integrated Galvanic Isolation (Option B Mandate): Every node uses Integrated Signal & Power Isolators (e.g., TI ISOW1412) to provide full galvanic isolation without the footprint penalty of bulky DC-DC modules.
+6-Pin Isolated Backbone: V_BUS, GND_POWER, CAN_H, CAN_L, CAN_GND (isolated secondary reference), and SHIELD (hybrid terminated via 1nF-10nF capacitor).
+Ruggedized Connectors: M12 or Molex Micro-Fit 3.0. Strict Hot-Plug Power-Good sequencing to prevent CAN backfeeding.
+Compute, Edge Intelligence & Telemetry
+Raw Telemetry Only: Nodes broadcast raw physics (V, I, Temp, SOC). Coordinator computes derived metrics.
+Native FDCAN + Sub-Second WiFi Bridge: STM32G4/H7 for real-time control. ESP32 acts as a bridge, utilizing ESP-NOW/Static-IP UDP for 
+<
+500
+m
+s
+<500ms emergency SOS bursts to minimize power drain.
+Edge-Computed Sensor Voting: Local median filtering and confidence scoring.
+Hardware Safe-State Watchdog: 3-tier watchdog ending in a D Flip-Flop hardware latch.

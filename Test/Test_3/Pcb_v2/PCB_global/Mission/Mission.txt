@@ -1,0 +1,35 @@
+[MISSION]
+Distributed solar-energy grid for autonomous habitats.
+
+[WHY]
+Energy = survival.
+Fossil fuels → finite + polluting.
+Solar → primary long-term energy source.
+
+[QUESTION]
+How should nodes share and prioritize power under varying battery levels and loads?
+
+[SCENARIO]
+A(30%,High)
+B(80%,Med)
+C(50%,Med-High)
+
+[FOCUS]
+Load balancing
+Power sharing
+Battery management
+Fault tolerance
+Grid stability
+
+[IMPLEMENTATION]
+Modular PCB prototype.
+
+[TARGET]
+Earth → Moon → Mars
+
+#Hardware_Inventory 
+[SOLAR]
+Loom 10W | Vmp 18.8V | Imp 0.56A | Voc 22.6V
+
+[BAT]
+CS7-12 SLA | 12V 7Ah (84Wh) | Chg 13.6-13.8V/F, 14.6-14.8V/C, 2.1Amax

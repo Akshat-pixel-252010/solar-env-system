@@ -1,0 +1,404 @@
+# Phase-1 Intelligent Power Node
+
+# Architecture Freeze Report v0.1
+
+Status: ARCHITECTURE PARTIALLY FROZEN
+
+Date: June 2026
+
+---
+
+# 1. Purpose
+
+This document defines the currently frozen architecture decisions for the Phase-1 Intelligent Power Node.
+
+The purpose of this board is to:
+
+* Harvest solar energy.
+* Maintain a 12V SLA battery.
+* Provide regulated power rails.
+* Collect telemetry.
+* Operate autonomously for extended periods.
+* Serve as the foundation of a future distributed intelligent energy network.
+
+This document intentionally freezes only architectural decisions.
+
+Component-level selections remain open unless explicitly stated.
+
+---
+
+# 2. Design Philosophy
+
+Priority Order:
+
+1. Safety
+2. Reliability
+3. Simplicity
+4. Manufacturability
+5. Cost
+6. Efficiency
+7. Compactness
+
+The system shall prefer proven hardware solutions over firmware-controlled safety mechanisms.
+
+Battery safety must never depend on software.
+
+The MCU shall function as an observer rather than a safety controller.
+
+---
+
+# 3. System Inputs
+
+## Solar Source
+
+Loom Solar Panel
+
+* Maximum Power: 10W
+* Vmp: 18.8V
+* Imp: 0.56A
+* Voc: 22.6V
+* Isc: 0.60A
+
+## Energy Storage
+
+12V Sealed Lead Acid Battery
+
+* Capacity: 7Ah
+* Energy: ~84Wh
+* Float Voltage: 13.6V–13.8V
+* Cyclic Voltage: 14.6V–14.8V
+
+---
+
+# 4. Mandatory Operating Modes
+
+The architecture must support all of the following modes:
+
+## Mode A
+
+Solar Present
+
+Battery Present
+
+System Operational
+
+## Mode B
+
+Solar Present
+
+Battery Absent
+
+System Operational
+
+## Mode C
+
+Solar Absent
+
+Battery Present
+
+System Operational
+
+## Mode D
+
+Solar Present
+
+Battery Removed During Operation
+
+System Remains Operational
+
+Any future architecture that fails any of these operating modes shall be rejected.
+
+---
+
+# 5. Architecture Principles
+
+The system shall be separated into three logical domains:
+
+## Energy Harvesting Domain
+
+Responsible for extracting energy from the solar panel.
+
+Responsibilities:
+
+* Solar protection
+* Solar regulation
+* Battery charging
+
+## Energy Storage Domain
+
+Responsible for:
+
+* Battery charging
+* Battery maintenance
+* Battery monitoring
+
+## System Power Domain
+
+Responsible for:
+
+* Delivering regulated power to system loads
+* Supporting uninterrupted operation
+* Allowing operation from solar, battery, or both
+
+This separation is considered a frozen architectural principle.
+
+---
+
+# 6. Power Architecture Status
+
+Current Architecture Candidate:
+
+Solar Panel
+→ Protection
+→ Charging Subsystem
+→ SLA Battery
+
+AND
+
+Solar Source + Battery Source
+→ Power Path Subsystem
+→ 12V System Bus
+
+The exact implementation remains under investigation.
+
+The architecture must guarantee:
+
+* Solar-only operation
+* Battery-only operation
+* Solar + battery operation
+* Battery removal survival
+
+The exact charger and power-path implementation are NOT frozen.
+
+---
+
+# 7. Power Rail Architecture
+
+Frozen.
+
+The board shall generate:
+
+## Rail 1
+
+12V System Bus
+
+Purpose:
+
+Primary system power distribution.
+
+## Rail 2
+
+5V Rail
+
+Generated from the 12V system bus.
+
+Purpose:
+
+Peripheral and future expansion power.
+
+## Rail 3
+
+3.3V Rail
+
+Generated from the 5V rail.
+
+Purpose:
+
+MCU
+Sensors
+Telemetry circuitry
+Future communication modules
+
+Current preferred topology:
+
+12V Bus
+→ 5V Buck Converter
+→ 3.3V LDO
+
+Component selection remains open.
+
+---
+
+# 8. Telemetry Architecture
+
+Frozen.
+
+The board shall provide local telemetry.
+
+Telemetry shall remain operational independently of network connectivity.
+
+Measured parameters:
+
+## Solar
+
+* Voltage
+* Current
+* Power
+
+## Battery
+
+* Voltage
+* Current
+* Power
+* Temperature
+
+## System
+
+* 12V Bus Voltage
+* 5V Rail Voltage
+* 3.3V Rail Voltage
+
+---
+
+# 9. Safety Architecture
+
+Frozen.
+
+Battery safety shall be implemented in hardware.
+
+The MCU shall not perform:
+
+* Charge control
+* Float regulation
+* Bulk charge regulation
+* Current limiting
+* Safety shutdown decisions
+
+Hardware subsystems shall remain safe even if the MCU is absent, crashed, or unpowered.
+
+---
+
+# 10. Sensor Architecture
+
+Frozen.
+
+## Current/Voltage Monitoring
+
+Preferred solution:
+
+INA226-class power monitors.
+
+Purpose:
+
+* Solar monitoring
+* Battery monitoring
+
+## Temperature Monitoring
+
+Preferred solution:
+
+10k NTC thermistor.
+
+Purpose:
+
+Battery temperature monitoring.
+
+Exact part numbers remain open.
+
+---
+
+# 11. Communications Architecture
+
+Frozen.
+
+Phase-1 Power Node shall not contain mandatory CAN or CAN-FD hardware.
+
+The node shall instead expose expansion interfaces.
+
+Required interfaces:
+
+* UART
+* I²C
+* SPI
+* GPIO
+* 3.3V
+* 5V
+* GND
+
+Future communication technologies may be added through expansion modules.
+
+---
+
+# 12. PCB Architecture
+
+Not Frozen.
+
+Open Questions:
+
+* 2-layer versus 4-layer
+* Final board dimensions
+* Thermal strategy
+* Component placement strategy
+
+Decision shall be based on:
+
+* Real routing requirements
+* Real JLCPCB manufacturing costs
+* Thermal analysis
+
+---
+
+# 13. Frozen Decisions
+
+| Decision                             | Status |
+| ------------------------------------ | ------ |
+| Safety-first design philosophy       | Frozen |
+| Hardware-controlled battery safety   | Frozen |
+| Solar + battery capable architecture | Frozen |
+| 12V system bus                       | Frozen |
+| 5V rail                              | Frozen |
+| 3.3V rail                            | Frozen |
+| Local telemetry                      | Frozen |
+| INA226-class monitoring              | Frozen |
+| NTC temperature sensing              | Frozen |
+| No mandatory CAN hardware            | Frozen |
+| Expansion-header approach            | Frozen |
+
+---
+
+# 14. Open Decisions
+
+| Decision                | Status |
+| ----------------------- | ------ |
+| Charger IC              | Open   |
+| Power-path architecture | Open   |
+| MCU                     | Open   |
+| Buck converter          | Open   |
+| TVS protection devices  | Open   |
+| PCB layer count         | Open   |
+| PCB dimensions          | Open   |
+| Thermal design          | Open   |
+
+---
+
+# 15. Current Highest-Priority Research
+
+Active Study:
+
+"Design and compare complete power architectures for a 10W solar panel + 12V 7Ah SLA battery system that must provide uninterrupted 12V bus operation under solar-only, battery-only, solar+battery, and battery-removal conditions."
+
+The outcome of this study will determine:
+
+* Final charger architecture
+* Final power-path architecture
+* Significant portions of the BOM
+
+No schematic capture shall begin before this study is completed and reviewed.
+
+---
+
+# Architecture Freeze Status
+
+Architecture Freeze Level: ~70%
+
+Ready for:
+
+* Documentation
+* Further research
+* Component evaluation
+
+Not yet ready for:
+
+* Schematic capture
+* PCB layout
+* BOM freeze

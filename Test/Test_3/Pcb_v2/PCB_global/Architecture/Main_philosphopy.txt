@@ -1,0 +1,24 @@
+Architecture:
+Distributed intelligent energy network.
+
+Communication:
+CAN-FD backbone.
+
+Node Types:
+- Source Nodes
+- Storage Nodes
+- Power Nodes
+- Sensor Nodes
+- Actuator Nodes
+- Coordinator Node
+
+Principles:
+- Modular
+- Plug-and-play
+- Fault tolerant
+- Decentralized intelligence
+- Local autonomy
+- Shared system awareness
+
+Goal:
+Maintain stable energy distribution and maximize system survival.

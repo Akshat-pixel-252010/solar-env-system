@@ -1,0 +1,19 @@
+Loom Solar Pannel - 
+maximum power (pmax) : 10 Wp
+Vmp: 18.8V
+Imp: 0.56A
+Isc:0.6A
+Voc: 22.6V
+Maximum system voltage: 600v
+specidicatoins are at STC:
+1000w/m^2 irradiance AM 1.5 Cell Temp 25C
+
+
+Chloride safepower, sealed lead acid battery-
+CS 7-12, 12V, 7Ah
+charging parameters:
+constant voltage charge with current limits (at 27 C)
+float = 13.6-13.8 v
+cyclic = 14.6 - 14.8v
+Max charging current : 2.1A
+min charging current : 0.7A
